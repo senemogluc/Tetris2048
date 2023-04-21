@@ -1,14 +1,11 @@
 import java.awt.Color; // the color type used in StdDraw
 import java.awt.Font; // the font type used in StdDraw
-import java.util.Arrays;
 import java.util.Random;
 
 // A class used for modeling numbered tiles as in 2048
 public class Tile {
    // Data fields: instance variables
-   // --------------------------------------------------------------------------
-   private final static Integer[] numbers = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048};
-   
+   // --------------------------------------------------------------------------   
    private final static Color[] colors = {
       new Color(255, 229, 204),   // 2
       new Color(255, 204, 153),   //4

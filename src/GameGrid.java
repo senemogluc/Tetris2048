@@ -1,7 +1,5 @@
 import java.awt.Color; // the color type used in StdDraw
 
-import javax.swing.table.TableStringConverter;
-
 // A class used for modelling the game grid
 public class GameGrid {
    // data fields
