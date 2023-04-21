@@ -22,7 +22,7 @@ public class Tile {
       new Color(124, 124, 43),    //1024
       new Color(144, 144, 66)};   //2048
 
-   private int number; // the number on the tile
+   public int number; // the number on the tile
    private Color backgroundColor; // background (tile) color
    private Color foregroundColor = Color.BLACK; // foreground (number) color
    private Color boxColor; // box (boundary) color
@@ -37,22 +37,77 @@ public class Tile {
    // Methods
    // --------------------------------------------------------------------------
    // the default constructor that creates a tile
+   public Tile(int value){
+      int i = value*2;
+
+      // Number 4
+      if (i == 4){
+         this.number = 4;
+         this.backgroundColor = colors[1];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 8){
+         this.number = 8;
+         this.backgroundColor = colors[2];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 16){
+         this.number = 16;
+         this.backgroundColor = colors[3];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 32){
+         this.number = 32;
+         this.backgroundColor = colors[4];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 64){
+         this.number = 64;
+         this.backgroundColor = colors[5];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 128){
+         this.number = 128;
+         this.backgroundColor = colors[6];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 256){
+         this.number = 256;
+         this.backgroundColor = colors[7];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 512){
+         this.number = 512;
+         this.backgroundColor = colors[8];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 1024){
+         this.number = 1024;
+         this.backgroundColor = colors[9];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if(i == 2048){
+         this.number = 2048;
+         this.backgroundColor = colors[10];
+         boxColor = new Color(0, 100, 200);
+      }
+   }
    public Tile() {
       Random rand = new Random();
       int i = rand.nextInt(2);
       // Number 2
       if(i == 0){
-         number = 2;
+         this.number = 2;
          this.backgroundColor = colors[i];
          boxColor = new Color(0, 100, 200);
       }
       // Number 4
       else if (i == 1){
-      number = 4;
+      this.number = 4;
       this.backgroundColor = colors[i];
       boxColor = new Color(0, 100, 200);
       }
-      // Number 8
+      /*  Number 8
       else if (i == 2){
          number = 8;
          // set the colors of the tile
@@ -113,6 +168,7 @@ public class Tile {
       this.backgroundColor = colors[i];
       boxColor = new Color(0, 100, 200);
       }
+      */
    }
    public Integer getNumber(){
       return this.number;
@@ -120,14 +176,8 @@ public class Tile {
    public void resetNumber(){
       this.number = 0;
    }
-   public void incNumber(int value){
-      this.number =+ value;
-
-      if(this.number > 2048)
-         this.number = 2048;
-
-      int i = Arrays.asList(numbers).indexOf(this.number); 
-      this.backgroundColor = colors[i];  
+   public void setNumber(int value){
+      this.number = value;
    }
 
     

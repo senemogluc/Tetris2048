@@ -1,5 +1,7 @@
 import java.awt.Color; // the color type used in StdDraw
 
+import javax.swing.table.TableStringConverter;
+
 // A class used for modelling the game grid
 public class GameGrid {
    // data fields
@@ -109,12 +111,14 @@ public class GameGrid {
    }
 
    public static void printMatrix(Tile[][] tileMatrix){
-      for (int ro = 0; ro < tileMatrix.length; ro++) {
-         for (int co = 0; co < tileMatrix[ro].length; co++) {
-            if (tileMatrix[ro][co] != null) {
-                  System.out.printf("%" + 4 + "s", tileMatrix[co][ro]);
-            } else {
-                  System.out.printf("%" + 4 + "d", 0);
+      int nRows = tileMatrix.length, nCols = tileMatrix[0].length;
+      for (int row = nRows - 1; row >= 0; row--) {
+         for (int col = 0; col < nCols; col++) {
+            if (tileMatrix[row][col] == null) {
+               System.out.printf("%" + 4 + "d", 0);
+            } 
+            else {
+               System.out.printf("%" + 4 + "s", tileMatrix[row][col]);
             }
          }
          System.out.println();
@@ -122,19 +126,34 @@ public class GameGrid {
       System.out.println("==========================================");
    }
 
-   public void doMerge(){
-      for(int col = 0; col < tileMatrix.length; col++){
-         for(int row = 0; row < tileMatrix[row].length; row++){
-
-            if(tileMatrix[row][col].getNumber() == tileMatrix[row+1][col].getNumber()){
-               tileMatrix[row+1][col].incNumber(tileMatrix[row][col].getNumber());
-               tileMatrix[row][col].resetNumber();
+   public void doMerge(Tile[][] tileMatrix){
+      int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
+      for(int col = 0; col < nCols; col++){ // col max = 11
+         for(int row = 0; row < nRows; row++){ // row max == 18
+            if(tileMatrix[row][col] != null && tileMatrix[row+1][col] != null){
+               if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
+                  tileMatrix[row+1][col] = null;
+                  //tileMatrix[row][col].tileCreator(tileMatrix[row][col].number);
+                  // yeni tile oluştur
+                  tileMatrix[row][col] = new Tile(tileMatrix[row][col].number);
+                  col--;
+               }
+            }
+         }
+      }
+   }
+   public void isGapped(Tile[][] tileMatrix){
+      int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
+      for(int col = 0; col < nCols; col++){ // col max = 11
+         for(int row = 0; row < nRows; row++){ // row max == 18
+            if(tileMatrix[row][col]==null && tileMatrix[row+1][col] != null){
+               tileMatrix[row+1][col] = tileMatrix[row][col];
+               tileMatrix[row+1][col] = null;
                col--;
             }
          }
       }
    }
-
    // A method that locks the tiles of the landed tetromino on the game grid while.
    // checking if the game is over due to having tiles above the topmost grid row.
    // The method returns true when the game is over and false otherwise.
@@ -160,14 +179,10 @@ public class GameGrid {
                   gameOver = true;
             }
          }
-      }
-      //doMerge();
-      /* 
-      System.out.println(tileMatrix[0][0]);
-      System.out.println(tileMatrix[0][1]);
-      System.out.println(tileMatrix[1][0]);
-      System.out.println(tileMatrix[1][1]);
-      */ 
+      } 
+      doMerge(tileMatrix);
+      //isGapped(tileMatrix);
+      //printMatrix(tileMatrix);
       // return the value of the gameOver flag
       return gameOver;
    }
