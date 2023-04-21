@@ -161,7 +161,7 @@ public class GameGrid {
             }
          }
       }
-      doMerge();
+      //doMerge();
       /* 
       System.out.println(tileMatrix[0][0]);
       System.out.println(tileMatrix[0][1]);
