@@ -124,7 +124,7 @@ public class GameGrid {
             if(col == 0 && (tileMatrix[row][col] != null && tileMatrix[row+1][col] != null)){
                if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
                   tileMatrix[row+1][col] = null;
-                  // yeni tile oluştur
+                  // New tile
                   tileMatrix[row][col] = new Tile(tileMatrix[row][col].number);
                   col=0;
                }
@@ -132,7 +132,7 @@ public class GameGrid {
             else if(tileMatrix[row][col] != null && tileMatrix[row+1][col] != null){
                if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
                   tileMatrix[row+1][col] = null;
-                  // yeni tile oluştur
+                  // New tile
                   tileMatrix[row][col] = new Tile(tileMatrix[row][col].number);
                   col--;
                }

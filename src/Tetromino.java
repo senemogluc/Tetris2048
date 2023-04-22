@@ -7,7 +7,6 @@ import java.util.Random;
 public class Tetromino {
    // Data fields: instance variables
    // --------------------------------------------------------------------------
-   private char type; // the type (shape) of the tetromino
    private Tile[][] tileMatrix; // the tiles on the tetromino shaped by its type
    // the position of the bottom left cell in the tile matrix is stored as
    // the position of the tetromino
@@ -20,13 +19,11 @@ public class Tetromino {
    // Data fields: class variables
    // --------------------------------------------------------------------------
    public static int gridWidth, gridHeight; // the size of the game grid
-
+   
    // Methods
    // --------------------------------------------------------------------------
    // A constructor for creating a tetromino with a given type (shape)
    public Tetromino(char type) {
-      // set the type (shape) of the tetromino as the given type
-      this.type = type;
       // determine the occupied (non-empty) tiles in the tile matrix
       Point[] occupiedTiles = new Point[4]; // tetromino -> 4 occupied tiles
       int n;
@@ -108,8 +105,6 @@ public class Tetromino {
       position.setY(bottomLeftCell.getY() + (n - 1) - row);
       return position;
    }
-
-
 
    // A method that creates a copy of tileMatrix omitting empty rows and columns as a list.
    public List<Tile> getTileList() {
@@ -242,8 +237,6 @@ public class Tetromino {
          bottomLeftCell.setY(bottomLeftCell.getY() - 1);
       return true; // a successful move in the given direction
    }
-
-   // A method that determines which columns tile merged will occur.
    
    // A method to check if the tetromino can be moved in the given direction or not
    public boolean canBeMoved(String dir, GameGrid gameGrid) {

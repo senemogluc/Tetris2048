@@ -33,11 +33,9 @@ public class Tile {
 
    // Methods
    // --------------------------------------------------------------------------
-   // the default constructor that creates a tile
+   // the default constructors that creates a tile
    public Tile(int value){
       int i = value*2;
-
-      // Number 4
       if(i==2){
          this.number = 2;
          this.backgroundColor = colors[0];

@@ -30,12 +30,6 @@ public class Tetris2048 {
       Tetromino currentTetromino = createTetromino();
       grid.setCurrentTetromino(currentTetromino);
 
-      //show the score  
-      Font font = new Font("Arial", Font.PLAIN, 25);
-      StdDraw.setFont(font);
-      StdDraw.setPenColor(StdDraw.RED);   
-      StdDraw.text(gridW+3, gridH-3, "hello");
-
       // display a simple menu before opening the game
       // by using the displayGameMenu method defined below
       displayGameMenu(gridH, gridW);
@@ -77,8 +71,9 @@ public class Tetris2048 {
             // update the game grid by locking the tiles of the landed tetromino
             boolean gameOver = grid.updateGrid(tiles, pos);
             // end the main game loop if the game is over
-            if (gameOver)
+            if (gameOver){
                break;
+            }
             // create the next tetromino to enter the game grid
             // by using the createTetromino function defined below
             currentTetromino = createTetromino();
@@ -90,6 +85,7 @@ public class Tetris2048 {
       }
       // print a message on the console that the game is over
       System.out.println("Game over!");
+      
    }
    // A method for creating a random shaped tetromino to enter the game grid
    public static Tetromino createTetromino() {
@@ -108,8 +104,8 @@ public class Tetris2048 {
       // colors used for the menu
       Color backgroundColor = new Color(42, 69, 99);
       Color buttonColor = new Color(25, 255, 228);
-      Color clickedColor = new Color(0, 0, 139);
-      Color textColor = new Color(31, 160, 239);
+      Color clickedColor = new Color(0, 100, 200);
+      Color textColor = new Color(0,0,0);
       // clear the background canvas to background_color
       StdDraw.clear(backgroundColor);
       // the relative path of the image file
@@ -153,9 +149,7 @@ public class Tetris2048 {
       StdDraw.setPenColor(textColor);
       String diffHard = "Hard";
       StdDraw.text(buttonX+4, buttonY-2.05, diffHard);
-      
 
-      
       // menu interaction loop
       while (true) {
          // display the menu and wait for a short time (50 ms)
