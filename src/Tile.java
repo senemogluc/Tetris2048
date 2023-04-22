@@ -38,7 +38,12 @@ public class Tile {
       int i = value*2;
 
       // Number 4
-      if (i == 4){
+      if(i==2){
+         this.number = 2;
+         this.backgroundColor = colors[0];
+         boxColor = new Color(0, 100, 200);
+      }
+      else if (i == 4){
          this.number = 4;
          this.backgroundColor = colors[1];
          boxColor = new Color(0, 100, 200);

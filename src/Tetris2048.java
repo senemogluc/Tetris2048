@@ -5,14 +5,15 @@ import java.util.Random;
 
 // The main class to run the Tetris 2048 game
 public class Tetris2048 {
+   public static int diff=10;
    public static void main(String[] args) {
       // set the size of the game grid
       int gridW = 12, gridH = 20;
       // set the size of the drawing canvas
-      int canvasH = 40 * gridH, canvasW = 40 * gridW;
+      int canvasH = 40 * gridH, canvasW = 60 * gridW;
       StdDraw.setCanvasSize(canvasW, canvasH);
       // set the scale of the coordinate system
-      StdDraw.setXscale(-0.5, gridW - 0.5);
+      StdDraw.setXscale(-0.5, gridW+3 - 0.5);
       StdDraw.setYscale(-0.5, gridH - 0.5);
       // double buffering enables computer animations, creating an illusion of
       // motion by repeating four steps: clear, draw, show and pause
@@ -20,19 +21,25 @@ public class Tetris2048 {
 
       // set the dimension values stored and used in the Tetromino class
       Tetromino.gridHeight = gridH;
-      Tetromino.gridWidth = gridW;
+      Tetromino.gridWidth = gridW-3;
 
       // create the game grid
-      GameGrid grid = new GameGrid(gridH, gridW);
+      GameGrid grid = new GameGrid(gridH, gridW-3);
       // create the first tetromino to enter the game grid
       // by using the createTetromino method defined below
       Tetromino currentTetromino = createTetromino();
       grid.setCurrentTetromino(currentTetromino);
 
+      //show the score  
+      Font font = new Font("Arial", Font.PLAIN, 25);
+      StdDraw.setFont(font);
+      StdDraw.setPenColor(StdDraw.RED);   
+      StdDraw.text(gridW+3, gridH-3, "hello");
+
       // display a simple menu before opening the game
       // by using the displayGameMenu method defined below
       displayGameMenu(gridH, gridW);
-
+      
       // the main game loop (using some keyboard keys for moving the tetromino)
       // -----------------------------------------------------------------------
       int iterationCount = 0; // used for the speed of the game
@@ -57,7 +64,7 @@ public class Tetris2048 {
 
          // move the active tetromino down by 1 once in 10 iterations (auto fall)
          boolean success = true;
-         if (iterationCount % 10 == 0)
+         if (iterationCount % diff == 0)
             success = currentTetromino.move("down", grid);
          iterationCount++;
 
@@ -87,6 +94,10 @@ public class Tetris2048 {
       System.out.println("Game over!");
    }
 
+   private static String getScore() {
+      return Integer.toString(GameGrid.score);
+   }
+
    // A method for creating a random shaped tetromino to enter the game grid
    public static Tetromino createTetromino() {
       // the type (shape) of the tetromino is determined randomly
@@ -104,13 +115,14 @@ public class Tetris2048 {
       // colors used for the menu
       Color backgroundColor = new Color(42, 69, 99);
       Color buttonColor = new Color(25, 255, 228);
+      Color clickedColor = new Color(0, 0, 139);
       Color textColor = new Color(31, 160, 239);
       // clear the background canvas to background_color
       StdDraw.clear(backgroundColor);
       // the relative path of the image file
       String imgFile = "images/menu_image.png";
       // center coordinates to display the image
-      double imgCenterX = (gridWidth - 1) / 2.0, imgCenterY = gridHeight - 7;
+      double imgCenterX = (gridWidth - 1) / 1.65, imgCenterY = gridHeight - 7;
       // display the image
       StdDraw.picture(imgCenterX, imgCenterY, imgFile);
       // the width and the height of the start game button
@@ -126,6 +138,31 @@ public class Tetris2048 {
       StdDraw.setPenColor(textColor);
       String textToDisplay = "Click Here to Start the Game";
       StdDraw.text(buttonX, buttonY, textToDisplay);
+
+      // Easy button
+      StdDraw.setFont(font);
+      StdDraw.setPenColor(buttonColor);
+      StdDraw.filledRectangle(buttonX-4, buttonY-2, buttonW / 6, buttonH / 6);
+      StdDraw.setPenColor(textColor);
+      String diffEasy = "Easy";
+      StdDraw.text(buttonX-4, buttonY-2.05, diffEasy);
+      // Normal button
+      StdDraw.setFont(font);
+      StdDraw.setPenColor(buttonColor);
+      StdDraw.filledRectangle(buttonX, buttonY-2, buttonW / 6, buttonH / 6);
+      StdDraw.setPenColor(textColor);
+      String diffNormal = "Normal";
+      StdDraw.text(buttonX, buttonY-2.05, diffNormal);
+      // Hard button
+      StdDraw.setFont(font);
+      StdDraw.setPenColor(buttonColor);
+      StdDraw.filledRectangle(buttonX+4, buttonY-2, buttonW / 6, buttonH / 6);
+      StdDraw.setPenColor(textColor);
+      String diffHard = "Hard";
+      StdDraw.text(buttonX+4, buttonY-2.05, diffHard);
+      
+
+      
       // menu interaction loop
       while (true) {
          // display the menu and wait for a short time (50 ms)
@@ -136,10 +173,43 @@ public class Tetris2048 {
             // get the x and y coordinates of the position of the mouse
             double mouseX = StdDraw.mouseX(), mouseY = StdDraw.mouseY();
             // check if these coordinates are inside the button
+            if (mouseX > buttonX-4 - buttonW / 6 && mouseX < buttonX-4 + buttonW / 6){
+               if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
+                  setDiff(15);
+                  StdDraw.setPenColor(clickedColor);
+                  StdDraw.filledRectangle(buttonX-4, buttonY-2, buttonW / 6, buttonH / 6);
+                  StdDraw.setPenColor(textColor);
+                  String CdiffEasy = "Easy";
+                  StdDraw.text(buttonX-4, buttonY-2.05, CdiffEasy);
+               }
+            }     
+            else if (mouseX > buttonX - buttonW / 6 && mouseX < buttonX + buttonW / 6){
+               if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
+                  setDiff(10);
+                  StdDraw.setPenColor(clickedColor);
+                  StdDraw.filledRectangle(buttonX, buttonY-2, buttonW / 6, buttonH / 6);
+                  StdDraw.setPenColor(textColor);
+                  String CdiffNormal = "Normal";
+                  StdDraw.text(buttonX, buttonY-2.05, CdiffNormal);
+               }
+            }
+            else if (mouseX > buttonX+4 - buttonW / 6 && mouseX < buttonX+4 + buttonW / 6){
+               if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
+                  setDiff(5);
+                  StdDraw.setPenColor(clickedColor);
+                  StdDraw.filledRectangle(buttonX+4, buttonY-2, buttonW / 6, buttonH / 6);
+                  StdDraw.setPenColor(textColor);
+                  String CdiffHard = "Hard";
+                  StdDraw.text(buttonX+4, buttonY-2.05, CdiffHard);
+               }
+            }
             if (mouseX > buttonX - buttonW / 2 && mouseX < buttonX + buttonW / 2)
                if (mouseY > buttonY - buttonH / 2 && mouseY < buttonY + buttonH / 2)
                   break; // break the loop to end the method and start the game
          }
       }
+   }
+   static void setDiff(int value){
+         diff = value;
    }
 }

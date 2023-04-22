@@ -1,4 +1,6 @@
 import java.awt.Color; // the color type used in StdDraw
+import java.awt.Font;
+import java.awt.ScrollPane;
 
 // A class used for modelling the game grid
 public class GameGrid {
@@ -14,6 +16,8 @@ public class GameGrid {
    private Color boundaryColor; // the color used for the grid boundaries
    private double lineThickness; // the thickness used for the grid lines
    private double boxThickness; // the thickness used for the grid boundaries
+   public static int score=0;
+   Color textColor = new Color(31, 160, 239);
 
    // A constructor for creating the game grid based on the given parameters
    public GameGrid(int gridH, int gridW) {
@@ -72,6 +76,12 @@ public class GameGrid {
       for (double y = startY + 1; y < endY; y++) // horizontal inner lines
          StdDraw.line(startX, y, endX, y);
       StdDraw.setPenRadius(); // reset the pen radius to its default value
+      //show the score  
+      Font font = new Font("Arial", Font.PLAIN, 25);
+      StdDraw.setFont(font);
+      StdDraw.setPenColor(textColor);   
+      StdDraw.text(11.6, 17, "Your Score");
+      StdDraw.text(11.6, 16, getScore());
    }
 
    // A method for drawing the boundaries around the game grid
@@ -82,8 +92,8 @@ public class GameGrid {
       // for the bounding box as its lines lie on the boundaries of the canvas)
       StdDraw.setPenRadius(boxThickness);
       // the center point coordinates for the game grid
-      double centerX = gridWidth / 2 - 0.5, centerY = gridHeight / 2 - 0.5;
-      StdDraw.rectangle(centerX, centerY, gridWidth / 2, gridHeight / 2);
+      double centerX = (gridWidth+0.1) / 2 - 0.5, centerY = gridHeight / 2 - 0.5;
+      StdDraw.rectangle(centerX, centerY, (gridWidth+0.1) / 2, gridHeight / 2);
       StdDraw.setPenRadius(); // reset the pen radius to its default value
    }
 
@@ -110,28 +120,20 @@ public class GameGrid {
 
    public static void printMatrix(Tile[][] tileMatrix){
       int nRows = tileMatrix.length, nCols = tileMatrix[0].length;
-      for (int row = nRows - 1; row >= 0; row--) {
-         for (int col = 0; col < nCols; col++) {
-            if (tileMatrix[row][col] == null) {
-               System.out.printf("%" + 4 + "d", 0);
-            } 
-            else {
-               System.out.printf("%" + 4 + "s", tileMatrix[row][col]);
-            }
-         }
-         System.out.println();
-      }
+      System.out.println(tileMatrix[0][0]);
+      System.out.println(tileMatrix[1][0]);
+      System.out.println(tileMatrix[0][1]);
+      System.out.println(tileMatrix[1][1]);
       System.out.println("==========================================");
    }
 
-   public void doMerge(Tile[][] tileMatrix){
+   public void doMerge(Tile[][] tileMatrix){ // col 0 duzelt
       int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
       for(int col = 0; col < nCols; col++){ // col max = 11
          for(int row = 0; row < nRows; row++){ // row max == 18
             if(tileMatrix[row][col] != null && tileMatrix[row+1][col] != null){
                if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
                   tileMatrix[row+1][col] = null;
-                  //tileMatrix[row][col].tileCreator(tileMatrix[row][col].number);
                   // yeni tile oluştur
                   tileMatrix[row][col] = new Tile(tileMatrix[row][col].number);
                   col--;
@@ -140,18 +142,38 @@ public class GameGrid {
          }
       }
    }
-   public void isGapped(Tile[][] tileMatrix){
-      int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
+   public void isGapped(Tile[][] tileMatrix){ //0. sutunu hallet 
+      int nRows = tileMatrix.length, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
       for(int col = 0; col < nCols; col++){ // col max = 11
-         for(int row = 0; row < nRows; row++){ // row max == 18
-            if(tileMatrix[row][col]==null && tileMatrix[row+1][col] != null){
-               tileMatrix[row+1][col] = tileMatrix[row][col];
+         for(int row = 0; row < nRows-1; row++){ // row max = 17
+            if(tileMatrix[row+1][col]!= null && tileMatrix[row][col] == null){
+               tileMatrix[row][col] = tileMatrix[row+1][col];
                tileMatrix[row+1][col] = null;
                col--;
             }
          }
       }
    }
+
+   public void deleteRows(Tile[][] tileMatrix){
+      int nCols = tileMatrix[0].length; // nRows = 19, nCols = 12
+      if(tileMatrix[0][0] != null && tileMatrix[0][1] != null && tileMatrix[0][2] != null && tileMatrix[0][3] != null && 
+      tileMatrix[0][4] != null && tileMatrix[0][5] != null && tileMatrix[0][6] != null && tileMatrix[0][7] != null && 
+      tileMatrix[0][8] != null){
+         for(int col = 0; col < nCols; col++){ // col start 0, max = 11
+               score += tileMatrix[0][col].number;
+               tileMatrix[0][col]=null;
+               isGapped(tileMatrix);
+            
+         }
+         System.out.println(score);
+      } 
+   }
+
+   public String getScore(){
+      return Integer.toString(this.score);
+   }
+   
    // A method that locks the tiles of the landed tetromino on the game grid while.
    // checking if the game is over due to having tiles above the topmost grid row.
    // The method returns true when the game is over and false otherwise.
@@ -179,7 +201,8 @@ public class GameGrid {
          }
       } 
       doMerge(tileMatrix);
-      //isGapped(tileMatrix);
+      isGapped(tileMatrix);
+      deleteRows(tileMatrix);
       //printMatrix(tileMatrix);
       // return the value of the gameOver flag
       return gameOver;
