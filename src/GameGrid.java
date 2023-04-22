@@ -1,6 +1,5 @@
 import java.awt.Color; // the color type used in StdDraw
 import java.awt.Font;
-import java.awt.ScrollPane;
 
 // A class used for modelling the game grid
 public class GameGrid {
@@ -118,20 +117,19 @@ public class GameGrid {
       return true;
    }
 
-   public static void printMatrix(Tile[][] tileMatrix){
-      int nRows = tileMatrix.length, nCols = tileMatrix[0].length;
-      System.out.println(tileMatrix[0][0]);
-      System.out.println(tileMatrix[1][0]);
-      System.out.println(tileMatrix[0][1]);
-      System.out.println(tileMatrix[1][1]);
-      System.out.println("==========================================");
-   }
-
-   public void doMerge(Tile[][] tileMatrix){ // col 0 duzelt
+   public void doMerge(Tile[][] tileMatrix){ 
       int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
       for(int col = 0; col < nCols; col++){ // col max = 11
          for(int row = 0; row < nRows; row++){ // row max == 18
-            if(tileMatrix[row][col] != null && tileMatrix[row+1][col] != null){
+            if(col == 0 && (tileMatrix[row][col] != null && tileMatrix[row+1][col] != null)){
+               if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
+                  tileMatrix[row+1][col] = null;
+                  // yeni tile oluştur
+                  tileMatrix[row][col] = new Tile(tileMatrix[row][col].number);
+                  col=0;
+               }
+            }
+            else if(tileMatrix[row][col] != null && tileMatrix[row+1][col] != null){
                if(tileMatrix[row][col].number == tileMatrix[row+1][col].number){
                   tileMatrix[row+1][col] = null;
                   // yeni tile oluştur
@@ -142,17 +140,22 @@ public class GameGrid {
          }
       }
    }
-   public void isGapped(Tile[][] tileMatrix){ //0. sutunu hallet 
+   public void isGapped(Tile[][] tileMatrix){ 
       int nRows = tileMatrix.length, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
-      for(int col = 0; col < nCols; col++){ // col max = 11
-         for(int row = 0; row < nRows-1; row++){ // row max = 17
-            if(tileMatrix[row+1][col]!= null && tileMatrix[row][col] == null){
-               tileMatrix[row][col] = tileMatrix[row+1][col];
-               tileMatrix[row+1][col] = null;
-               col--;
+         for(int col = 0; col < nCols; col++){ // col max = 11
+            for(int row = 0; row < nRows-1; row++){ // row max = 17
+               if(col == 0 && (tileMatrix[row+1][col]!= null && tileMatrix[row][col] == null)){
+                  tileMatrix[row][col] = tileMatrix[row+1][col];
+                     tileMatrix[row+1][col] = null;
+                     col=0;
+               }
+               else if(tileMatrix[row+1][col]!= null && tileMatrix[row][col] == null){
+                     tileMatrix[row][col] = tileMatrix[row+1][col];
+                     tileMatrix[row+1][col] = null;
+                     col--;
+               }
             }
          }
-      }
    }
 
    public void deleteRows(Tile[][] tileMatrix){
@@ -163,15 +166,13 @@ public class GameGrid {
          for(int col = 0; col < nCols; col++){ // col start 0, max = 11
                score += tileMatrix[0][col].number;
                tileMatrix[0][col]=null;
-               isGapped(tileMatrix);
-            
+               isGapped(tileMatrix);     
          }
-         System.out.println(score);
       } 
    }
 
    public String getScore(){
-      return Integer.toString(this.score);
+      return Integer.toString(score);
    }
    
    // A method that locks the tiles of the landed tetromino on the game grid while.
@@ -203,8 +204,6 @@ public class GameGrid {
       doMerge(tileMatrix);
       isGapped(tileMatrix);
       deleteRows(tileMatrix);
-      //printMatrix(tileMatrix);
-      // return the value of the gameOver flag
       return gameOver;
    }
 }

@@ -87,17 +87,10 @@ public class Tetris2048 {
 
          // display the game grid and the current tetromino
          grid.display();
-
       }
-
       // print a message on the console that the game is over
       System.out.println("Game over!");
    }
-
-   private static String getScore() {
-      return Integer.toString(GameGrid.score);
-   }
-
    // A method for creating a random shaped tetromino to enter the game grid
    public static Tetromino createTetromino() {
       // the type (shape) of the tetromino is determined randomly
