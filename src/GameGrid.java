@@ -17,6 +17,7 @@ public class GameGrid {
    private double boxThickness; // the thickness used for the grid boundaries
    public static int score=0;
    Color textColor = new Color(31, 160, 239);
+   Color buttonColor = new Color(25, 255, 228);
 
    // A constructor for creating the game grid based on the given parameters
    public GameGrid(int gridH, int gridW) {
@@ -117,6 +118,8 @@ public class GameGrid {
       return true;
    }
 
+   // A method for checking the all columns to find a merging tiles. Basicly if selected tile is same as it's below tile,
+   // marge them together and create a new doubled tile.
    public void doMerge(Tile[][] tileMatrix){ 
       int nRows = tileMatrix.length-1, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
       for(int col = 0; col < nCols; col++){ // col max = 11
@@ -140,6 +143,8 @@ public class GameGrid {
          }
       }
    }
+
+   // A method for checking the all the colums to find a gap between tiles. If gap is founded, the algorithm moves the upper tile to the bottom position.
    public void isGapped(Tile[][] tileMatrix){ 
       int nRows = tileMatrix.length, nCols = tileMatrix[0].length; // nRows = 19, nCols = 12 
          for(int col = 0; col < nCols; col++){ // col max = 11
@@ -158,6 +163,8 @@ public class GameGrid {
          }
    }
 
+   // A method for checking the last row of the game grid, if all the columns of the last row is not empty, 
+   // deletes the last row and moves the upper rows one position down. When the algorithm deletes the last row it also adds the deleted tiles number to the score.
    public void deleteRows(Tile[][] tileMatrix){
       int nCols = tileMatrix[0].length; // nRows = 19, nCols = 12
       if(tileMatrix[0][0] != null && tileMatrix[0][1] != null && tileMatrix[0][2] != null && tileMatrix[0][3] != null && 
@@ -171,10 +178,11 @@ public class GameGrid {
       } 
    }
 
+   // A method for getting the score.
    public String getScore(){
       return Integer.toString(score);
    }
-   
+
    // A method that locks the tiles of the landed tetromino on the game grid while.
    // checking if the game is over due to having tiles above the topmost grid row.
    // The method returns true when the game is over and false otherwise.

@@ -6,6 +6,7 @@ import java.util.Random;
 public class Tile {
    // Data fields: instance variables
    // --------------------------------------------------------------------------   
+   // Each element corresponds to a number.
    private final static Color[] colors = {
       new Color(255, 229, 204),   // 2
       new Color(255, 204, 153),   //4
@@ -33,7 +34,7 @@ public class Tile {
 
    // Methods
    // --------------------------------------------------------------------------
-   // the default constructors that creates a tile
+   // The constructor that creates a tile for merging tiles. It creates a tile starting from 2 to 2048 with corresponding color values.
    public Tile(int value){
       int i = value*2;
       if(i==2){
@@ -92,6 +93,7 @@ public class Tile {
          boxColor = new Color(0, 100, 200);
       }
    }
+   // The constructor that creates a tile for tetrominos. It only creates number 2 and number 4.
    public Tile() {
       Random rand = new Random();
       int i = rand.nextInt(2);
@@ -107,84 +109,13 @@ public class Tile {
       this.backgroundColor = colors[i];
       boxColor = new Color(0, 100, 200);
       }
-      /*  Number 8
-      else if (i == 2){
-         number = 8;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 16
-      else if (i == 3){
-         number = 16;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 32
-      else if (i == 4){
-      number = 32;
-      this.backgroundColor = colors[i];
-      boxColor = new Color(0, 100, 200);
-      }
-      // Number 64
-      else if (i == 5){
-         number = 64;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 128
-      else if (i == 6){
-         number = 128;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 256
-      else if (i == 7){
-         number = 256;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 512
-      else if (i == 8){
-         number = 512;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      // Number 1024
-      else if (i == 9){
-         number = 1024;
-         // set the colors of the tile
-         this.backgroundColor = colors[i];
-         boxColor = new Color(0, 100, 200);
-      }
-      else{
-         number = 2048;
-      // set the colors of the tile
-      this.backgroundColor = colors[i];
-      boxColor = new Color(0, 100, 200);
-      }
-      */
-   }
-   public Integer getNumber(){
-      return this.number;
-   }
-   public void resetNumber(){
-      this.number = 0;
-   }
-   public void setNumber(int value){
-      this.number = value;
    }
 
-    
    @Override
    public String toString() {
        return Integer.toString(number);
    }
+
    // a method for drawing the tile
    public void draw(Point position, double... sideLength) {
       // the default value for the side length (sLength) is 1

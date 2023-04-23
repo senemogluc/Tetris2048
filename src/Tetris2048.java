@@ -159,7 +159,8 @@ public class Tetris2048 {
          if (StdDraw.isMousePressed()) {
             // get the x and y coordinates of the position of the mouse
             double mouseX = StdDraw.mouseX(), mouseY = StdDraw.mouseY();
-            // check if these coordinates are inside the button
+            
+            // check if these coordinates are inside the button easy.
             if (mouseX > buttonX-4 - buttonW / 6 && mouseX < buttonX-4 + buttonW / 6){
                if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
                   setDiff(15);
@@ -169,7 +170,8 @@ public class Tetris2048 {
                   String CdiffEasy = "Easy";
                   StdDraw.text(buttonX-4, buttonY-2.05, CdiffEasy);
                }
-            }     
+            }
+            // check if these coordinates are inside the button normal.     
             else if (mouseX > buttonX - buttonW / 6 && mouseX < buttonX + buttonW / 6){
                if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
                   setDiff(10);
@@ -180,6 +182,7 @@ public class Tetris2048 {
                   StdDraw.text(buttonX, buttonY-2.05, CdiffNormal);
                }
             }
+            // check if these coordinates are inside the button hard.
             else if (mouseX > buttonX+4 - buttonW / 6 && mouseX < buttonX+4 + buttonW / 6){
                if (mouseY > buttonY-2 - buttonH / 6 && mouseY < buttonY-2 + buttonH / 6){
                   setDiff(5);
@@ -196,6 +199,7 @@ public class Tetris2048 {
          }
       }
    }
+   // To manipulate the value of difficulty.
    static void setDiff(int value){
          diff = value;
    }
